@@ -18,9 +18,13 @@ class SeriesCreated extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public string $nomeSerie,
+        public int $idSerie,
+        public int $qtdTemporadas,
+        public int $episodiosPorTemporada,
+    )
     {
-        //
     }
 
     /**
@@ -31,7 +35,7 @@ class SeriesCreated extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Series Created',
+            subject: "Série {$this->nomeSerie} criada",
         );
     }
 
@@ -52,6 +56,6 @@ class SeriesCreated extends Mailable
     }
 
     public function build() {
-        return $this->view('mail.series-created');
+        return $this->markdown('mail.series-created');
     }
 }
