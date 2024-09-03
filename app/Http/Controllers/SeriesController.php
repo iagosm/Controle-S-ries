@@ -37,7 +37,7 @@ class SeriesController extends Controller
         \App\Events\SeriesCreated::dispatch(
             $serie->nome,
             $serie->id,
-            $request->seasonQty,
+            $request->seasonsQty,
             $request->episodesPerSeason,
         );
         return to_route('series.index')
