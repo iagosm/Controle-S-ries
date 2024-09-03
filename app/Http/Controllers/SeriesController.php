@@ -37,15 +37,15 @@ class SeriesController extends Controller
 
         
         $usersAll = User::all();
-        foreach($usersAll as $user){
+        foreach($usersAll as $indice => $user){
             $email = new SeriesCreated(
                 $serie->nome,
                 $serie->id,
                 $request->seasonsQty,
                 $request->episodesPerSeason,
             );
-            Mail::to($user)->send($email);
-            sleep(2);
+            $when = now()->addSecond($indice * 5);
+            Mail::to($user)->later($when, $email,);
         }
         return to_route('series.index')
             ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
