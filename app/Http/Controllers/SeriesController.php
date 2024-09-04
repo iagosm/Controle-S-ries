@@ -33,6 +33,8 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
+        $coverPath = $request->file('cover')->store('series_cover', 'public');
+        $request->coverPath = $coverPath;
         $serie = $this->repository->add($request);
         \App\Events\SeriesCreated::dispatch(
             $serie->nome,
@@ -46,6 +48,8 @@ class SeriesController extends Controller
 
     public function destroy(Series $series)
     {
+        $series->delete();
+        \App\Jobs\DeleteSeriesCover::dispatch($series->cover);
         $series->delete();
 
         return to_route('series.index')
