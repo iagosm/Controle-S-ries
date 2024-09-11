@@ -20,9 +20,12 @@ class SeriesController extends Controller{
     return response()->json($this->seriesRepository->add($request), 201);
   }
 
-  public function show(Series $series) {
-    // return $series = Series::whereId($series)->with('seasons.episodes')->first();
-    return $series;
+  public function show(int $series) {
+    $seriesModel = Series::with('seasons.episodes')->find($series);
+    if($seriesModel === null) {
+      return response()->json(["message"=> "Séries not found"],404);
+    }
+    return $seriesModel;
   }
 
   public function update(Series $series, SeriesFormRequest $request) {
